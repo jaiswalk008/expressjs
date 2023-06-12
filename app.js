@@ -8,7 +8,6 @@ const app = express();
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const error404Controller = require('./controllers/404')
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const contactRoutes = require('./routes/contactus');
@@ -23,6 +22,5 @@ app.post('/success',(req,res)=>{
   res.status(200).send('<h1>Form Submitted Successfullt</h1>');
 })
 
-app.use(error404Controller.get404Page);
 
 app.listen(3000);
