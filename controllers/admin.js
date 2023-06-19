@@ -23,7 +23,7 @@ exports.postAddProduct = (req, res, next) => {
 
 //here we will pass edit product info
 /*Editing a product : using id to edit the poduct and save it by not creatingh 
-a new product rather replacing the xisting one*/
+a new product rather replacing the existing one*/
 
 /*Query Parameter - they are provided in the url
 they can be added to a url by adding a question mark (?)
@@ -34,9 +34,11 @@ also called optional data
 
 The route is determined upto the querstion mark*/
 exports.getEditProduct = (req, res, next) => {
+  /*<a href="/admin/edit-product/<%= product.id %>?edit=true" class="btn">Edit</a> in product.ejs */
   const editMode = req.query.edit;// Note: The extracted value is always a string so "true" instead of true
   if(!editMode) return res.redirect('/'); 
   const prodId = req.params.productId;  
+  //Note:In the url, edit is query and productId is a parameter
   Product.findById(prodId, product =>{
     if(!product) return res.redirect('/');
     res.render('admin/edit-product', {
@@ -65,7 +67,7 @@ exports.postEditProducts = (req,res)=>{
 //controller for deleteProduct route
 exports.deleteProduct = (req,res)=>{
   const prodId = req.body.productId;
-  console.log('id= '+prodId);
+ // console.log('id= '+prodId);
   Product.deleteProductById(prodId);
   res.redirect('/admin/products');
 }
