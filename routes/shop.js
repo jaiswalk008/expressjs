@@ -10,13 +10,13 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
-//: -> this signals that it should not look for a route,it can be anything
-router.get('/products/:productId',shopController.getProduct);
-//router.get('/products/delete') -> this route should be above the dynamic route
+router.get('/products/:productId', shopController.getProduct);
 
 router.get('/cart', shopController.getCart);
 
-router.post('/cart',shopController.postCart)
+router.post('/cart', shopController.postCart);
+
+router.post('/cart-delete-item', shopController.postCartDeleteProduct);
 
 router.get('/orders', shopController.getOrders);
 

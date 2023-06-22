@@ -1,3 +1,4 @@
+
 const mysql = require('mysql2');
 /*
     Connection object - It is used to run queries
