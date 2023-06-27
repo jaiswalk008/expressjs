@@ -16,6 +16,8 @@ const shopRoutes = require('./routes/shop');
 
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -42,10 +44,18 @@ app.use(errorController.get404);
 //CASCADE- means if the user is deleted, all the products created by it will be deleted too. 
 Product.belongsTo(User,{contraints:true , onDelete: 'CASCADE'});
 User.hasMany(Product);//optional
+User.hasOne(Cart);
+Cart.belongsTo(User);
+// This only works when there is an intermediate table
+//that connects the two table and stores combination of 
+//product id and cart id
+Cart.belongsToMany(Product, {through : CartItem});
+Product.belongsToMany(Cart , {through : CartItem});
+
 
 //sync method syncs the models to the database
 // by creating an appropiate table
-sequelize.sync()
+sequelize.sync(/*{force:true}*/)
 //{force : true} inside sync :drops the existing tables
 .then(result =>{
     return User.findByPk(1)
@@ -56,12 +66,16 @@ sequelize.sync()
     if(!user){
         User.create({name:'karan', 
         email:'jaiskaran008@gmail.com'
-    })
+        })
     }
     return user;
 })
 .then(user =>{
     console.log(user);
+    return user.createCart();
+    
+})
+.then(()=>{
     app.listen(3000);
 })
 .catch(err=> console.log(err));
